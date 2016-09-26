@@ -1,0 +1,468 @@
+GO
+A new refreshing language
+22 Oct 2016
+
+
+Cristian Pavan
+(some kind of) Web Developer
+tux.eithel@gmail.com
+@tux_eithel
+
+
+* Why learn a new programing language
+
+**
+Common situation in life:
+
+- have a problem or an idea
+- think a solution
+- choose the right *tool* for the job
+: why i "study" other languages
+
+**
+
+In IT problems, our tools are programming languages.
+**
+**
+**
+
+.caption Go is an open source programming language that makes it easy 
+.caption to build simple, reliable, and efficient software. 
+
+: talk about how diffcult is learn a new language after hours of work
+
+
+* What's go ?
+
+Go is a _statically-typed_ language program with syntax loosely derived from that of C that include:
+
+- garbage collection
+- type safety
+- dynamic-typing capabilities
+- additional built-in types (compared to C)
+- large standard library
+- CSP-style concurrent programming features
+
+*Why* *was* *it* *made?*
+
+The Go programming language is an open source project to make programmers more productive.
+
+: google wants developer more poductive
+: CPS, Communicating Sequential Processes
+
+* Story about Go
+
+Conceived around 2007, announced late 2009 by:
+
+: already done
+- Robert Griesemer (_Research_ _at_ _Google_) [[https://twitter.com/robertgriesemer][@robertgriesemer]]
+- Rob Pike (_Unix_, _Plan_ _9_, _UTF-8_) [[https://twitter.com/rob_pike][@rob_pike]]
+- Ken Thompson (_designed_ _orginal_ _Unix_, _invented_ _B_, _UTF-8_)
+
+A slide about history is here: [[https://talks.golang.org/2015/how-go-was-made.slide][How go was made]].
+
+**
+**
+
+Other active member
+
+- Andrew Gerrand [[https://twitter.com/enneff][@enneff]]
+- Brad Fitzpatrick [[https://twitter.com/bradfitz][@bradfitz]]
+- Rick Hudson 
+: memory management Train Algorithm, the Sapphire Algorithm, the Mississippi Delta Algorithm
+: for golang from "Stop the World" to "Concurent GC" to "Request Oriented Collector GC"
+
+
+* Key features (1/5)
+
+*Learning* *Curve*
+
+Syntax like C with a small number of reserved words.
+
+Generally there is only one way to do things.
+
+: talk about variables initialization
+
+*Batteries* *Included*
+
+Large standar library (especially in network area), and a simple way to add external packages using `go` `get`
+
+	import (
+		"errors"
+		"fmt"
+		
+		"database/sql"
+		_ "github.com/lib/pq"
+		
+		"github.com/gorilla/mux"	
+	)
+
+* Key features (2/5)
+
+*Speed*
+
+Built-in _concurrency_ _primitives_.
+
+Use of _channels_ to sincronize lightweight "thread" called _goroutine_, with `select` statement.
+
+.caption Don't communicate by sharing memory, share memory by communicating.
+
+Use all the core of your system.
+
+: talk about limit cores use and how scheduler works 
+
+*Fast* *Compilation*
+
+Initially made in C, now the compiler is in Go and use Static Code Analysis in order to generate better and smaller code.
+
+: talk about time regression
+
+
+* Key features (3/5)
+
+*Deployment*
+
+Go generates statically linked native binaries, without external dependencies.
+
+This suits well for container/vm images.
+
+**
+**
+
+Easy cross compilation:
+	
+	GOOS=darwin GOARCH=amd64 go build main.go
+	
+	GOOS=linux GOARCH=arm go build main.go
+
+: talk about "hello word" example
+
+
+* Key features (4/5)
+
+*Tools*
+
+Several tools to manipulate source code or get information
+
+- gofmt
+
+.caption Gofmt's style is no one's favorite, yet gofmt is everyone's favorite.
+
+- go vet
+- godoc
+- golint
+- goimports
+- guru
+- gometalinter
+- pprof
+
+
+* Key features (5/5)
+a nice mascot, a _gopher_
+.image gopherbw.jpg
+
+: a gopher is in italian a citello (Scoiattolo di terra europeo)
+
+
+* Critics
+
+- Lacks of Generic (expecially for basic type)
+- Dependency/Vendoring
+- Too minimal
+- Already stable
+
+
+* Critic: lacks of generics
+
+Go does not support generics like other *strictly-typed* programming language (Java, C#, C++). You can't define function like that:
+
+	func sum(a Type, b Type) Type {
+		return a + b
+	}
+
+Yo have to use
+ 
+	interface{}
+as generic type, and check the type inside a function:
+
+	func sum(a interface{}, b interface{}) interface{} {
+		switch t := a.(type) {
+			case int:
+			 ...
+			case string:
+			...
+		}
+	}
+
+
+* Critic: Dependency
+
+Go default directory structure (exported via `$GOPATH`):
+
+	├── bin
+	├── pkg
+	└── src
+	    ├── github.com
+			└── tux-eithel
+			│	└── linuxday2016-golang
+			└──gorilla
+				└── mux
+
+The `import` directive doesn't allow to specify a version, tag or hash, so in order to make *reproducibily* *builds* you need to use other tools like [[https://github.com/tools/godep][godep]], [[http://getgb.io/][gb]], [[https://github.com/mattn/gom][gom]] or serivce like [[http://labix.org/gopkg.in][gopkg]] because *src* folder is shared between projects.
+
+The official solution is create a *vendor* folder inside your project and copy the dependencies.
+
+There is a committee discussing a [[https://groups.google.com/forum/#!msg/go-package-management/P8TehVoFLjg/Ni6VRyOjEAAJ][Package Management Proposal]] with the goal to implement it for Go 1.8 (january 2017).
+
+: godep is vendoring, like composer.json for PHP, Gemfile for ruby or package.json for node
+: gb is project-based workplace
+: gom is revision locking
+
+
+* Install
+
+In order to install Go do:
+
+- download the right version of tar.gz here [[https://golang.org/dl/][https://golang.org/dl/]]
+- extract the archive inside your home directory
+- create the _workspace_ directories
+
+	mkdir -p $HOME/projectGo/{pkg,bin,src}
+
+- add in your `.profile` (or `.bashrc` or `.zshenv`) this lines
+
+	export GOROOT="$HOME/go"			   // directory where tar.gz has been extracted
+	export PATH="$GOROOT/bin:$PATH"		// add go executables to PATH
+	
+	export GOPATH="$HOME/projectGo"		// export the worspace directory
+	export PATH="GOPATH/bin:$PATH"		 // add packages executables to PATH
+
+Now you are ready to `go` `get`, `go` `build`, etc...
+
+
+* In Deep (1/1)
+
+Zero value
+
+	var i int
+	var ii = 0
+	iii := 0
+
+all varaibles are of type *int* and have value *0*.
+
+Array, slice and map:
+
+	array := [3]int{1, 2, 3}
+
+	slice := []int{5, 6, 7}
+
+	collection := map[int]string{
+		8:  "eight",
+		9:  "nine",
+		10: "ten",
+	}
+
+: zero value also for array
+: talk about slice: convenient interface to sequences of data
+: The key can be of any type for which the equality operator is defined, such as integers, floating point and complex numbers, strings, pointers, interfaces (as long as the dynamic type supports equality), structs and arrays.
+
+
+* In Deep (2/2)
+
+If
+
+	if err := file.Chmod(0664); err != nil {
+	    log.Print(err)
+	}
+
+For
+
+	// Like a C for
+	for init; condition; post { }
+	
+	// Like a C while
+	for condition { }
+	
+	// Like a C for(;;)
+	for { }
+	
+	
+	for key, value := range collection {
+	    ...
+	}
+	
+	
+* In Deep (3/3)
+
+Multiple return values
+
+	func (file *File) Write(b []byte) (n int, err error)
+
+	num, err := f.Write([]byte{})
+	
+	value, ok := collection[10]
+	
+Blank identifier 
+	
+	if _, ok:= collection[11]; !ok {
+		log.Print("not found")
+	}
+	
+* In Depp (4/4)
+
+Embedding
+
+	type Reader interface {
+	    Read(p []byte) (n int, err error)
+	}
+	
+	type Writer interface {
+	    Write(p []byte) (n int, err error)
+	}
+	
+	// ReadWriter is the interface that combines the Reader and Writer interfaces.
+	type ReadWriter interface {
+	    Reader
+	    Writer
+	}
+	
+
+* In Deep (5/5)
+
+Defer
+
+	f, err := os.Open(filename)
+	
+	if err != nil {
+	    return "", err
+	}
+	defer f.Close()  // f.Close will run when we're finished.
+	
+	// rest of the code
+
+
+Documentation
+
+	// funcName sees people and does stuff
+	func funcName(people []person) {
+	    
+	}
+
+an example for the [[https://godoc.org/golang.org/x/oauth2][oauth2 package]]
+
+
+* In Deep: strcut (1/5)
+
+Structs with unexported fields
+
+.code human/human.go
+
+
+
+* In Deep: struct (2/5)
+
+Structs with embedded struct
+
+.code pets/pets.go
+
+
+* In Deep: struct (3/5)
+
+.code only_types.go /START MAIN OMIT/,/END MAIN OMIT/
+
+
+* In Deep: struct (4/5)
+
+`SaySomething` function
+
+.play only_types.go /^func SaySomething/,/^}/ 
+
+: case MyCustomSpeak:
+: fmt.Println(talk.MyName() + " - " + talk.Speak())
+
+
+* In Deep: struct (5/5)
+
+define an interface:
+
+.code with_interface.go /START I OMIT/,/END I OMIT/
+
+.play with_interface.go /START MAIN OMIT/,/END MAIN OMIT/
+
+: The bigger the interface, the weaker the abstraction.
+
+* In Deep: goroutines
+
+A goroutine is a lightweight thread managed by the Go runtime.
+
+**
+
+.caption Concurrency is about dealing with lots of things at once.
+.caption Parallelism is about doing lots of things at once. 
+
+.play simple_goroutine.go
+
+: try with time.Sleep(1*time.Second) (you need to import "time")
+
+
+* In Deep: channel
+
+Channels are a typed conduit through which you can send and receive values
+
+.caption Don't communicate by sharing memory, share memory by communicating.
+
+.play channel.go
+
+
+* Channel with Select
+
+.play channel_select.go
+
+
+
+* Go on Web
+
+Example of a web application
+
+.play server.go
+
+Go to [[http://localhost:8080][http://localhost:8080]]
+
+
+* What's go place ?
+
+Go, has been announced as a system language (used in server side).
+
+**
+**
+
+Its scope right now is between microservices environment, useful command line utilities and web api.
+
+**
+**
+
+It's going to be used to replace the slowest parts of monolithic applications.
+
+
+* Resources
+
+.link https://tour.golang.org/ Go Tour
+
+.link https://golang.org/doc/effective_go.html Effective Go
+
+**
+**
+
+*Tips* *Links*
+
+.link https://talks.golang.org/2015/tricks.slide Stupid Gopher Tricks
+
+.link https://go-traps.appspot.com/ Go Traps
+
+.link http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/index.html 50 Shades of Go
+
+
+.link http://slides.com/kevrone/what-could-go-wrong?token=HZlPo4g-#/ What Could Go Wrong?
+
+
+* Question ?
