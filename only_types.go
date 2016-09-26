@@ -4,8 +4,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/tux-eithel/linuxday2016-golang/human"
-	"github.com/tux-eithel/linuxday2016-golang/pets"
+	"github.com/tux-eithel/linuxday2016-golang-slide/human"
+	"github.com/tux-eithel/linuxday2016-golang-slide/pets"
 )
 
 type MyCustomSpeak string
