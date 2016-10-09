@@ -9,8 +9,10 @@ tux.eithel@gmail.com
 @tux_eithel
 
 
-* Why learn a new programing language
+* Why learn a new programming language
 
+Learn a new programming language let you to solve problem in a better way
+and you can see how different programming languages treat common situations. 
 **
 Common situation in life:
 
@@ -22,7 +24,6 @@ Common situation in life:
 **
 
 In IT problems, our tools are programming languages.
-**
 **
 **
 
@@ -39,7 +40,6 @@ Go is a _statically-typed_ language program with syntax loosely derived from tha
 - garbage collection
 - type safety
 - dynamic-typing capabilities
-- additional built-in types (compared to C)
 - large standard library
 - CSP-style concurrent programming features
 
@@ -54,7 +54,6 @@ The Go programming language is an open source project to make programmers more p
 
 Conceived around 2007, announced late 2009 by:
 
-: already done
 - Robert Griesemer (_Research_ _at_ _Google_) [[https://twitter.com/robertgriesemer][@robertgriesemer]]
 - Rob Pike (_Unix_, _Plan_ _9_, _UTF-8_) [[https://twitter.com/rob_pike][@rob_pike]]
 - Ken Thompson (_designed_ _orginal_ _Unix_, _invented_ _B_, _UTF-8_)
@@ -81,14 +80,14 @@ Syntax like C with a small number of reserved words.
 
 Generally there is only one way to do things.
 
-: talk about variables initialization
+: other times no, so this is a critic
 
 *Batteries* *Included*
 
 Large standar library (especially in network area), and a simple way to add external packages using `go` `get`
 
 	import (
-		"errors"
+		"net/http"
 		"fmt"
 		
 		"database/sql"
@@ -107,7 +106,7 @@ Use of _channels_ to sincronize lightweight "thread" called _goroutine_, with `s
 
 .caption Don't communicate by sharing memory, share memory by communicating.
 
-Use all the core of your system.
+Use all the cores of your system.
 
 : talk about limit cores use and how scheduler works 
 
@@ -150,10 +149,8 @@ Several tools to manipulate source code or get information
 
 - go vet
 - godoc
-- golint
-- goimports
+- golint, goimports, gometalinter
 - guru
-- gometalinter
 - pprof
 
 
@@ -166,7 +163,7 @@ a nice mascot, a _gopher_
 
 * Critics
 
-- Lacks of Generic (expecially for basic type)
+- Lacks of Generic (expecially for functions with basic type)
 - Dependency/Vendoring
 - Too minimal
 - Already stable
@@ -217,7 +214,7 @@ There is a committee discussing a [[https://groups.google.com/forum/#!msg/go-pac
 : godep is vendoring, like composer.json for PHP, Gemfile for ruby or package.json for node
 : gb is project-based workplace
 : gom is revision locking
-
+: about vendor, left-pad example node
 
 * Install
 
@@ -240,9 +237,9 @@ In order to install Go do:
 Now you are ready to `go` `get`, `go` `build`, etc...
 
 
-* In Deep (1/1)
+* In Deep (1/7)
 
-Zero value
+*Zero* *value*
 
 	var i int
 	var ii = 0
@@ -250,7 +247,7 @@ Zero value
 
 all varaibles are of type *int* and have value *0*.
 
-Array, slice and map:
+*Array*, *slice* and *map*:
 
 	array := [3]int{1, 2, 3}
 
@@ -267,15 +264,15 @@ Array, slice and map:
 : The key can be of any type for which the equality operator is defined, such as integers, floating point and complex numbers, strings, pointers, interfaces (as long as the dynamic type supports equality), structs and arrays.
 
 
-* In Deep (2/2)
+* In Deep (2/7)
 
-If
+*If*
 
 	if err := file.Chmod(0664); err != nil {
 	    log.Print(err)
 	}
 
-For
+*For*
 
 	// Like a C for
 	for init; condition; post { }
@@ -292,23 +289,66 @@ For
 	}
 	
 	
-* In Deep (3/3)
+* In Deep (3/7)
 
-Multiple return values
+*Multiple* *return* *values*
 
-	func (file *File) Write(b []byte) (n int, err error)
+	func Write(b []byte) (n int, err error)
 
-	num, err := f.Write([]byte{})
+	num, err := Write([]byte{})
 	
 	value, ok := collection[10]
 	
-Blank identifier 
+*Blank* *identifier* 
 	
 	if _, ok:= collection[11]; !ok {
 		log.Print("not found")
 	}
 	
-* In Depp (4/4)
+* In Depp (4/7)
+
+*Structs*
+
+	package human // package name
+	
+	type Human struct {
+		Name     string // exported field
+		sentence string // unexported field
+	}
+	
+	func (h *Human) SetSentence (s string) { // method attached to struct
+		h.sentence = s
+	}
+	
+	func (h *Human) Speak() string {
+		return h.Name + " says: " + h.sentence
+	}
+	
+	
+* In Depp (5/7)
+
+*Interfaces*
+
+Interfaces describe objects behaviour.
+
+
+Interfaces are atuomatically implemented.
+
+	package main
+
+	type Speaker interface {
+		Speak() string
+	}
+	
+	func SpeakAll(speakers []Speaker) {
+		for _, value := range speakers {
+			speakers.Speak()
+		}
+	}
+	
+.caption The bigger the interface, the weaker the abstraction.
+
+* In Depp (5/6)
 
 Embedding
 
@@ -334,9 +374,9 @@ Defer
 	f, err := os.Open(filename)
 	
 	if err != nil {
-	    return "", err
+	    return err
 	}
-	defer f.Close()  // f.Close will run when we're finished.
+	defer f.Close()  // f.Close will run when function has finished
 	
 	// rest of the code
 
@@ -349,47 +389,6 @@ Documentation
 	}
 
 an example for the [[https://godoc.org/golang.org/x/oauth2][oauth2 package]]
-
-
-* In Deep: strcut (1/5)
-
-Structs with unexported fields
-
-.code human/human.go
-
-
-
-* In Deep: struct (2/5)
-
-Structs with embedded struct
-
-.code pets/pets.go
-
-
-* In Deep: struct (3/5)
-
-.code only_types.go /START MAIN OMIT/,/END MAIN OMIT/
-
-
-* In Deep: struct (4/5)
-
-`SaySomething` function
-
-.play only_types.go /^func SaySomething/,/^}/ 
-
-: case MyCustomSpeak:
-: fmt.Println(talk.MyName() + " - " + talk.Speak())
-
-
-* In Deep: struct (5/5)
-
-define an interface:
-
-.code with_interface.go /START I OMIT/,/END I OMIT/
-
-.play with_interface.go /START MAIN OMIT/,/END MAIN OMIT/
-
-: The bigger the interface, the weaker the abstraction.
 
 * In Deep: goroutines
 
