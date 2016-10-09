@@ -3,7 +3,7 @@ package pets
 
 // Pets is generic (cute) domestic animal
 type Pets struct {
-	Name string // this is a "private" method
+	Name string
 }
 
 // MyName returns the pet's name
