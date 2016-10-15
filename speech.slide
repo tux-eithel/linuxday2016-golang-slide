@@ -47,8 +47,8 @@ Go is a _statically-typed_ language program with syntax loosely derived from tha
 
 The Go programming language is an open source project to make programmers more productive.
 
+: CSP, Communicating Sequential Processes
 : google wants developer more poductive
-: CPS, Communicating Sequential Processes
 
 * Story about Go
 
@@ -69,7 +69,7 @@ Other active member
 - Brad Fitzpatrick [[https://twitter.com/bradfitz][@bradfitz]]
 - Rick Hudson 
 : memory management Train Algorithm, the Sapphire Algorithm, the Mississippi Delta Algorithm
-: for golang from "Stop the World" to "Concurent GC" to "Request Oriented Collector GC"
+: for golang from "Stop the World" to "Concurrent GC" to "Request Oriented Collector GC"
 
 
 * Key features (1/5)
@@ -81,6 +81,25 @@ Syntax like C with a small number of reserved words.
 Generally there is only one way to do things.
 
 : other times no, so this is a critic
+
+**
+**
+
+*Concurrency*
+
+Built-in _concurrency_ _primitives_.
+
+Use of _channels_ to sincronize lightweight "thread" called _goroutine_, with `select` statement.
+
+.caption Don't communicate by sharing memory, share memory by communicating.
+
+Use all the cores of your system.
+
+: talk about limit cores use and how scheduler works 
+
+
+
+* Key features (2/5)
 
 *Batteries* *Included*
 
@@ -96,19 +115,9 @@ Large standar library (especially in network area), and a simple way to add exte
 		"github.com/gorilla/mux"	
 	)
 
-* Key features (2/5)
 
-*Speed*
 
-Built-in _concurrency_ _primitives_.
-
-Use of _channels_ to sincronize lightweight "thread" called _goroutine_, with `select` statement.
-
-.caption Don't communicate by sharing memory, share memory by communicating.
-
-Use all the cores of your system.
-
-: talk about limit cores use and how scheduler works 
+* Key features (3/5)
 
 *Fast* *Compilation*
 
@@ -116,17 +125,14 @@ Initially made in C, now the compiler is in Go and use Static Code Analysis in o
 
 : talk about time regression
 
-
-* Key features (3/5)
+**
+**
 
 *Deployment*
 
 Go generates statically linked native binaries, without external dependencies.
 
 This suits well for container/vm images.
-
-**
-**
 
 Easy cross compilation:
 	
@@ -152,6 +158,7 @@ Several tools to manipulate source code or get information
 - golint, goimports, gometalinter
 - guru
 - pprof
+- delve
 
 
 * Key features (5/5)
@@ -251,7 +258,7 @@ all varaibles are of type *int* and have value *0*.
 
 	array := [3]int{1, 2, 3}
 
-	slice := []int{5, 6, 7}
+	slice := []int{5, 6, 7} // slice := make([]int, 3, 5)
 
 	collection := map[int]string{
 		8:  "eight",
@@ -348,7 +355,7 @@ Interfaces are atuomatically implemented.
 	
 .caption The bigger the interface, the weaker the abstraction.
 
-* In Depp (5/6)
+* In Depp (6/7)
 
 Embedding
 
@@ -367,7 +374,7 @@ Embedding
 	}
 	
 
-* In Deep (5/5)
+* In Deep (7/7)
 
 Defer
 
