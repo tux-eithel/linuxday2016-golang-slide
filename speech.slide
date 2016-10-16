@@ -223,25 +223,6 @@ There is a committee discussing a [[https://groups.google.com/forum/#!msg/go-pac
 : gom is revision locking
 : about vendor, left-pad example node
 
-* Install
-
-In order to install Go do:
-
-- download the right version of tar.gz here [[https://golang.org/dl/][https://golang.org/dl/]]
-- extract the archive inside your home directory
-- create the _workspace_ directories
-
-	mkdir -p $HOME/projectGo/{pkg,bin,src}
-
-- add in your `.profile` (or `.bashrc` or `.zshenv`) this lines
-
-	export GOROOT="$HOME/go"			   // directory where tar.gz has been extracted
-	export PATH="$GOROOT/bin:$PATH"		// add go executables to PATH
-	
-	export GOPATH="$HOME/projectGo"		// export the worspace directory
-	export PATH="GOPATH/bin:$PATH"		 // add packages executables to PATH
-
-Now you are ready to `go` `get`, `go` `build`, etc...
 
 
 * In Deep (1/7)
